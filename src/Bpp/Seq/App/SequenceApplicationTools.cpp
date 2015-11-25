@@ -460,8 +460,10 @@ VectorSiteContainer* SequenceApplicationTools::getSiteContainer(
           if (replace)
             selectedSites->reindexSites();
         }
-        else
-          throw Exception("Unknown site selection description: " + siteSet);
+        else {
+          std::cerr << e.what() << "\n";
+          throw Exception("Problematic site selection description: " + siteSet);
+        }
       }
 
       if (verbose)

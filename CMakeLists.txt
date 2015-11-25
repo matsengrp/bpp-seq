@@ -18,6 +18,12 @@ IF(NOT NO_VIRTUAL_COV)
       FORCE)
 ENDIF(NOT NO_VIRTUAL_COV)
 
+# Add -O0 to remove optimizations for debugging when using gcc.
+IF(CMAKE_COMPILER_IS_GNUCC)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
+
 IF(NO_VIRTUAL_COV)
   MESSAGE("-- Covariant return with virtual inheritance disabled.")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_VIRTUAL_COV=1")
@@ -70,7 +76,7 @@ MACRO(IMPROVED_FIND_LIBRARY OUTPUT_LIBS lib_name include_to_find)
     MESSAGE("   includes : ${${lib_name}_INCLUDE_DIR}")
     MESSAGE("   libraries: ${${lib_name}_LIBRARY}")
   ENDIF(${${lib_name}_INCLUDE_DIR} MATCHES ${lib_name}_INCLUDE_DIR-NOTFOUND)
-  
+
   #add the dependency:
   INCLUDE_DIRECTORIES(${${lib_name}_INCLUDE_DIR})
   SET(${OUTPUT_LIBS} ${${OUTPUT_LIBS}} ${${lib_name}_LIBRARY})
